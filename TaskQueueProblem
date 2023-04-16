@@ -1,1 +1,60 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+using namespace std;
+// the approach is to first count the frequency in Hashmap
+// of each element in  the oldTaskQueue 
+//to know that which elements are removed from the
+//oldTaskQueue we can tranverse in the newTaskQueue
+//and decrement the frequency of each element present in the newTaskQueue
+//now the element whose frequency is not 0, means these are those elements which are removed.
+
+//Now that we know the removed elements,
+// we can traverse in oldTaskQueue such that i=0 to i<currentIndex
+//count the number of removed elements we have have found till the currIndex 
+//for eg:in taskqueue={'A', 'B', 'C', 'D', 'E', 'F', 'A', 'B'} removedelements are :A and D;currIndex=7 then cnt=2
+//now to get the index of the newNext available member we can return currIndex-cnt
+
+//below is the cpp implimentation
+
+int findCurrentIndexMemberIndex(const vector<char>& oldTaskQueue, int currIndex, const vector<char>& newTaskQueue) {
+    // creating frequency map of old task queue
+    unordered_map<char, int> freqMap;
+    for (char c : oldTaskQueue) {
+        freqMap[c]++;
+    }
+
+    // updating frequency map for new task queue
+    for (char c : newTaskQueue) {
+        if (freqMap.find(c) != freqMap.end()) {
+            freqMap[c]--;
+        }
+    }
+
+    // counting how many members have been removed before current index member
+    int cnt = 0;
+    for (int i = 1; i <currIndex; i++) {
+        if (freqMap[oldTaskQueue[i]] != 0) {
+            cnt++;
+        }
+    }
+
+    return currIndex - cnt;
+}
+
+int main() {
+    vector<char> oldTaskQueue = {'A', 'B', 'C', 'D', 'E', 'F', 'A', 'B', 'C', 'D', 'A', 'B', 'C', 'A', 'B', 'A'};
+    int currIndex = 7;
+    vector<char> newTaskQueue = {'B', 'C', 'E', 'F', 'B', 'C', 'B', 'C', 'B'};
+   int CurrentIndexMember=findCurrentIndexMemberIndex(oldTaskQueue, currIndex, newTaskQueue);
+    cout <<"The next available member to the Current Index Member is :"<< CurrentIndexMember << endl;
+    //output:5
+
+    return 0;
+}
+
+
+
+
+
 
