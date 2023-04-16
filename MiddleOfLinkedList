@@ -1,1 +1,65 @@
+#include <iostream>
+using namespace std;
 
+//there can be two approaches to this problem
+//one brute force app would be to simple calculate the length of the linked list
+// and divide the length say n/2 - this will give the middle elements's position (in case of odd length linked list),
+//in case of even length we can return n/2+1 to return second of the two middle nodes
+//but in this the time complexity will be O(n)+O(n/2)
+
+//an optimisted approach to this would we to use two pointer , slow and fast
+// where the slow pointer moves by one step while the fast pointer movs by 2 steps.
+//we can start by traversing while(fast!=NULL && fast->next!=NULL)
+//when any one the conditon becomes true , we can return the slow pointer's val 
+
+// we are incrementinge the slow ptr by 1 and fast ptr by 2,
+// the fast ptr will travel double that of the slow pointer.
+// So when the fast ptr will be at the end of the Linked List, slow ptr would have covered half of the Linked List till then.
+// So slow ptr will be pointing towards the middle of Linked List.
+
+
+// Define a node of the linked list
+//Linked List Node
+struct Node {
+    int data;
+    struct Node* next;
+
+    // Constructor
+   Node(int data)
+    {
+        this->data = data;
+        next = NULL;
+    }
+};
+// Function to find the middle node of the linked list
+Node* findMiddleNode(Node* head) {
+    Node* slowPtr = head;
+    Node* fastPtr = head;
+
+    // Move fastPtr by two nodes and slowPtr by one node
+    // When fastPtr reaches the end of the list, slowPtr will be at the middle
+    while (fastPtr != NULL && fastPtr->next != NULL) {
+        slowPtr = slowPtr->next;
+        fastPtr = fastPtr->next->next;
+    }
+
+    return slowPtr;
+}
+
+
+int main() {
+    
+
+    // Insert elements into the linked list
+   //Linked List
+
+    Node* head = new Node(3);
+    head->next = new Node(5);
+    head->next->next = new Node(6);
+    
+    // Find the middle node of the linked list
+    Node* middleNode = findMiddleNode(head);
+    cout << "Middle Node: " << middleNode->data << endl;
+
+    return 0;
+}
